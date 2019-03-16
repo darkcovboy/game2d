@@ -1,18 +1,29 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class MainMenuController : MonoBehaviour
-{
-    // Start is called before the first frame update
-    void Start()
-    {
-        
+public class MainMenuController : MonoBehaviour {
+
+    public GameObject mainMenu;
+    public GameObject levelMenu;
+
+    private void Start() {
+        MainMenuShow();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+    public void LevelsMenuShow() {
+        mainMenu.SetActive(false);
+        levelMenu.SetActive(true);
+    }
+
+    public void MainMenuShow() {
+        mainMenu.SetActive(true);
+        levelMenu.SetActive(false);
+    }
+    
+    public void GameExit() {
+#if UNITY_EDITOR
+        UnityEditor.EditorApplication.isPlaying = false;
+#else
+        Application.Quit();
+#endif
     }
 }

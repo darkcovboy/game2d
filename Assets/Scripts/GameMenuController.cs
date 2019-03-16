@@ -11,9 +11,13 @@ public class GameMenuController : MonoBehaviour {
     public GameObject menuUI;
     public GameObject escape;
     public GameObject finish;
+    public GameObject finishText;
+    public GameObject gameOverText;
+    public GameObject buttonNextLevel;
 
     public Text timer;
     public Text starsCount;
+    public Text levelNumber;
 
     private bool isFail;
     private float timeStart;
@@ -23,6 +27,8 @@ public class GameMenuController : MonoBehaviour {
         finish.SetActive(false);
         escape.SetActive(true);
         timeStart = Time.time;
+        levelNumber.text += SceneManager.GetActiveScene().buildIndex;
+        Debug.Log($"SceneManager.sceneCount = {SceneManager.sceneCountInBuildSettings},  buildIndex = {SceneManager.GetActiveScene().buildIndex}");
     }
 
     void Update() {
@@ -47,6 +53,14 @@ public class GameMenuController : MonoBehaviour {
     }
 
     public void Finish() {
+        finishText.SetActive(false);
+        gameOverText.SetActive(false);
+        if (SceneManager.sceneCountInBuildSettings == (SceneManager.GetActiveScene().buildIndex + 1)) {
+            buttonNextLevel.SetActive(false);
+            gameOverText.SetActive(true);
+        } else {
+            finishText.SetActive(true);
+        }
         finish.SetActive(true);
         escape.SetActive(false);
         var timeleft = Time.time - timeStart;
@@ -76,5 +90,10 @@ public class GameMenuController : MonoBehaviour {
     public void ShowMenu() {
         menuUI.SetActive(true);
         Time.timeScale = 0;
+    }
+
+    public void NextLevel() {
+        var indexLevel = SceneManager.GetActiveScene().buildIndex;
+        SceneManager.LoadScene(indexLevel + 1);
     }
 }
